@@ -21,9 +21,11 @@ public class Person {
     private String name;
 
     @Column(name = "created_at")
+    @NotEmpty(message = "Time of create should be not empty")
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
+    @NotEmpty(message = "Time of update should be not empty")
     private LocalDateTime updatedAt;
 
     public int getId() {
