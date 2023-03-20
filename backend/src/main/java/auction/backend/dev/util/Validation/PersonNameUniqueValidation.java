@@ -4,7 +4,6 @@ import auction.backend.dev.models.Person;
 import auction.backend.dev.services.PersonServiceValidation;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.Optional;
 
