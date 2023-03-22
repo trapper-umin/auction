@@ -1,11 +1,13 @@
 package auction.backend.dev.controllers;
 
+import auction.backend.dev.controllers.interfaces.ICreatorsController;
 import auction.backend.dev.dto.CreatorDTO;
 import auction.backend.dev.models.Creator;
 import auction.backend.dev.services.CreatorsService;
 import auction.backend.dev.util.CreatorResponse;
 import auction.backend.dev.util.CreatorsCollectionResponse;
 import auction.backend.dev.util.Excaption.Creator.CreatorNotCreatedException;
+import auction.backend.dev.util.Excaption.Creator.CreatorNotUpdatedException;
 import auction.backend.dev.util.Excaption.Creator.CreatorsExceptionHandler;
 import auction.backend.dev.util.Validation.CreatorNameUniqueValidation;
 import jakarta.validation.Valid;
@@ -22,8 +24,8 @@ import java.util.List;
 
 @RestController
 @CreatorsExceptionHandler
-@RequestMapping("api/v1.0/creators") //будет ли работать с / перед api ? (Мутод проб и ошибок)
-public class CreatorsController {
+@RequestMapping("api/v1.0/creators")
+public class CreatorsController implements ICreatorsController {
 
     private final CreatorsService creatorsService;
     private final ModelMapper modelMapper;
@@ -37,7 +39,6 @@ public class CreatorsController {
         this.creatorNameUniqueValidation=creatorNameUniqueValidation;
     }
 
-    @GetMapping
     public ResponseEntity<CreatorsCollectionResponse> getAllCreators(){
         List<Creator> creators=creatorsService.getAllCreators();
         List<CreatorDTO> creatorDTOS=new ArrayList<>();
@@ -51,7 +52,6 @@ public class CreatorsController {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
     public ResponseEntity<CreatorResponse> getCreator(@PathVariable("id") int id){
         CreatorDTO creator=convertToCreatorDTO(creatorsService.getCreatorById(id));
         CreatorResponse response=new CreatorResponse(
@@ -62,7 +62,6 @@ public class CreatorsController {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    @PostMapping
     public ResponseEntity<CreatorResponse> createCreator(@RequestBody @Valid CreatorDTO creatorDTO,
                                                  BindingResult bindingResult){
         creatorNameUniqueValidation.validate(creatorDTO,bindingResult);
@@ -72,7 +71,7 @@ public class CreatorsController {
             for(FieldError error : errors){
                 message.append(error.getField())
                         .append("-")
-                        .append(error.getRejectedValue())
+                        .append(error.getDefaultMessage())
                         .append(";");
             }
             throw new CreatorNotCreatedException(message.toString());
@@ -84,6 +83,34 @@ public class CreatorsController {
                 creatorDTO
         );
         return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
+    public ResponseEntity<CreatorResponse> updateCreator(@PathVariable("id") int id,
+                                                         @RequestBody @Valid CreatorDTO creatorDTO,
+                                                         BindingResult bindingResult){
+        creatorNameUniqueValidation.validate(creatorDTO,bindingResult);
+        if(bindingResult.hasErrors()){
+            StringBuilder message=new StringBuilder();
+            List<FieldError> errors=bindingResult.getFieldErrors();
+            for(FieldError error : errors){
+                message.append(error.getField())
+                        .append("-")
+                        .append(error.getDefaultMessage())
+                        .append(";");
+            }
+            throw new CreatorNotUpdatedException(message.toString());
+        }
+        creatorsService.updateCreator(id,convertToCreator(creatorDTO));
+        CreatorResponse response=new CreatorResponse(
+                HttpStatus.OK,
+                LocalDateTime.now(),
+                creatorDTO
+        );
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    public ResponseEntity<HttpStatus> delete(int id) {
+        return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
     }
 
     private Creator convertToCreator(CreatorDTO creatorDTO){

@@ -11,4 +11,4 @@ CREATE TABLE creator(
     description varchar NOT NULL CHECK ( length(description)>=3 AND length(description)<=255),
     created_at timestamp NOT NULL ,
     updated_at timestamp NOT NULL
-)
+);

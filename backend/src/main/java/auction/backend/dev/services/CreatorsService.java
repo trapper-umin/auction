@@ -1,6 +1,5 @@
 package auction.backend.dev.services;
 
-import auction.backend.dev.dto.CreatorDTO;
 import auction.backend.dev.models.Creator;
 import auction.backend.dev.repositories.CreatorsRepository;
 import auction.backend.dev.util.Excaption.Creator.CreatorNotFoundException;
@@ -32,7 +31,7 @@ public class CreatorsService {
     public Creator getCreatorById(int id){
         Optional<Creator> creator=creatorsRepository.findById(id);
         if(creator.isEmpty())
-            throw new CreatorNotFoundException("Creator with id="+id+" not found");
+            throw new CreatorNotFoundException("Creator with id "+id+" not found");
         return creator.get();
     }
 
@@ -43,6 +42,18 @@ public class CreatorsService {
     @Transactional
     public void createCreator(Creator creator){
         creator.setCreatedAt(LocalDateTime.now());
+        creator.setUpdatedAt(LocalDateTime.now());
+        creatorsRepository.save(creator);
+    }
+
+    @Transactional
+    public void updateCreator(int id, Creator creator){
+        Optional<Creator> creatorBeforeUpdate=creatorsRepository.findById(id);
+        if(creatorBeforeUpdate.isEmpty())
+            throw new CreatorNotFoundException("Creator with id "+id+" not found");
+
+        creator.setId(id);
+        creator.setCreatedAt(creatorBeforeUpdate.get().getCreatedAt());
         creator.setUpdatedAt(LocalDateTime.now());
         creatorsRepository.save(creator);
     }

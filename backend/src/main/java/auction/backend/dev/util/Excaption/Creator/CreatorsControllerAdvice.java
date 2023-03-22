@@ -40,4 +40,14 @@ public class CreatorsControllerAdvice {
         );
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler
+    private ResponseEntity<BadResponse> handleException(CreatorNotUpdatedException e){
+        BadResponse response=new BadResponse(
+                e.getMessage(),
+                HttpStatus.BAD_REQUEST,
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+    }
 }

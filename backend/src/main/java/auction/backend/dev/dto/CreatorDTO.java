@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 public class CreatorDTO {
 
     @NotEmpty(message = "Name should be not empty")
