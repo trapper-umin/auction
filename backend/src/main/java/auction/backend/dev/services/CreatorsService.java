@@ -1,60 +1,124 @@
 package auction.backend.dev.services;
 
+import auction.backend.dev.dto.CreatorDTO;
 import auction.backend.dev.models.Creator;
-import auction.backend.dev.repositories.CreatorsRepository;
-import auction.backend.dev.util.Excaption.Creator.CreatorNotFoundException;
-import auction.backend.dev.util.Excaption.Creator.CreatorsNotFoundException;
+import auction.backend.dev.util.CreatorResponse;
+import auction.backend.dev.util.CreatorsCollectionResponse;
+import auction.backend.dev.util.Excaption.Creator.CreatorNotUpdatedException;
+import auction.backend.dev.util.Excaption.common.ErrorMessage;
+import auction.backend.dev.util.Excaption.common.NotCreatedException;
+import auction.backend.dev.util.GoodResponse;
+import auction.backend.dev.util.Validation.CreatorNameUniqueValidation;
+import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
 public class CreatorsService {
 
-    private final CreatorsRepository creatorsRepository;
+    private final ModelMapper modelMapper;
+    private final CreatorNameUniqueValidation creatorNameUniqueValidation;
+    private final CreatorsDBService creatorsDBService;
 
-    public CreatorsService(CreatorsRepository creatorsRepository){
-        this.creatorsRepository=creatorsRepository;
+    public CreatorsService(ModelMapper modelMapper,
+                           CreatorNameUniqueValidation creatorNameUniqueValidation,
+                           CreatorsDBService creatorsDBService){
+
+        this.modelMapper = modelMapper;
+        this.creatorNameUniqueValidation = creatorNameUniqueValidation;
+        this.creatorsDBService = creatorsDBService;
     }
 
-    public List<Creator> getAllCreators(){
-        List<Creator> creators=creatorsRepository.findAll();
-        if(creators.size()==0)
-            throw new CreatorsNotFoundException("There are no creators in the database");
-        return creators;
+    public ResponseEntity<CreatorsCollectionResponse> getAll(){
+        List<Creator> creators= creatorsDBService.getAll();
+        List<CreatorDTO> creatorDTOS=new ArrayList<>();
+        for(Creator creator : creators){
+            creatorDTOS.add(convertToCreatorDTO(creator));
+        }
+        CreatorsCollectionResponse response=new CreatorsCollectionResponse(creatorDTOS.size(),
+                LocalDateTime.now(),
+                HttpStatus.OK,
+                creatorDTOS);
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    public Creator getCreatorById(int id){
-        Optional<Creator> creator=creatorsRepository.findById(id);
-        if(creator.isEmpty())
-            throw new CreatorNotFoundException("Creator with id "+id+" not found");
-        return creator.get();
+    public ResponseEntity<CreatorResponse> get(int id){
+        CreatorDTO creator=convertToCreatorDTO(creatorsDBService.get(id));
+        CreatorResponse response=new CreatorResponse(
+                HttpStatus.OK,
+                LocalDateTime.now(),
+                creator
+        );
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    public Optional<Creator> getOptionalCreatorByName(String name){
-        return creatorsRepository.findByName(name);
+    public ResponseEntity<CreatorResponse> create(CreatorDTO creatorDTO,
+                                                  BindingResult bindingResult){
+        creatorNameUniqueValidation.validate(creatorDTO,bindingResult);
+        if(bindingResult.hasErrors()){
+            List<ErrorMessage> message=new ArrayList<>();
+            List<FieldError> errors=bindingResult.getFieldErrors();
+            for(FieldError error : errors){
+                message.add(new ErrorMessage(error.getField(),error.getDefaultMessage()));
+            }
+            throw new NotCreatedException(message);
+        }
+        creatorsDBService.create(convertToCreator(creatorDTO));
+        CreatorResponse response=new CreatorResponse(
+                HttpStatus.OK,
+                LocalDateTime.now(),
+                creatorDTO
+        );
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    @Transactional
-    public void createCreator(Creator creator){
-        creator.setCreatedAt(LocalDateTime.now());
-        creator.setUpdatedAt(LocalDateTime.now());
-        creatorsRepository.save(creator);
+    public ResponseEntity<CreatorResponse> update(int id,
+                                                  CreatorDTO creatorDTO,
+                                                  BindingResult bindingResult){
+        creatorNameUniqueValidation.validate(creatorDTO,bindingResult);
+        if(bindingResult.hasErrors()){
+            StringBuilder message=new StringBuilder();
+            List<FieldError> errors=bindingResult.getFieldErrors();
+            for(FieldError error : errors){
+                message.append(error.getField())
+                        .append("-")
+                        .append(error.getDefaultMessage())
+                        .append(";");
+            }
+            throw new CreatorNotUpdatedException(message.toString());
+        }
+        creatorsDBService.update(id,convertToCreator(creatorDTO));
+        CreatorResponse response=new CreatorResponse(
+                HttpStatus.OK,
+                LocalDateTime.now(),
+                creatorDTO
+        );
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @Transactional
-    public void updateCreator(int id, Creator creator){
-        Optional<Creator> creatorBeforeUpdate=creatorsRepository.findById(id);
-        if(creatorBeforeUpdate.isEmpty())
-            throw new CreatorNotFoundException("Creator with id "+id+" not found");
+    public ResponseEntity<GoodResponse> delete(int id){
+        //TODO добавить обработку ошибки, когда пользователь с таким id не найден
+        creatorsDBService.delete(id);
+        GoodResponse response=new GoodResponse(
+                "Creator with id "+id+" was deleted",
+                HttpStatus.OK,
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
 
-        creator.setId(id);
-        creator.setCreatedAt(creatorBeforeUpdate.get().getCreatedAt());
-        creator.setUpdatedAt(LocalDateTime.now());
-        creatorsRepository.save(creator);
+    private Creator convertToCreator(CreatorDTO creatorDTO){
+        return modelMapper.map(creatorDTO, Creator.class);
+    }
+
+    private CreatorDTO convertToCreatorDTO(Creator creator){
+        return modelMapper.map(creator, CreatorDTO.class);
     }
 }

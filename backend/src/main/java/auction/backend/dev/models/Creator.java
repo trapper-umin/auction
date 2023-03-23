@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "creator")
-public class Creator {
+public class Creator extends AbstractEntity{
 
     @Id
     @Column(name = "creator_id")

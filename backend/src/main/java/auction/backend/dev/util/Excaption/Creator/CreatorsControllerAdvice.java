@@ -1,6 +1,8 @@
 package auction.backend.dev.util.Excaption.Creator;
 
 import auction.backend.dev.util.BadResponse;
+import auction.backend.dev.util.BadResponseWithErrorsList;
+import auction.backend.dev.util.Excaption.common.NotCreatedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -32,21 +34,21 @@ public class CreatorsControllerAdvice {
     }
 
     @ExceptionHandler
-    private ResponseEntity<BadResponse> handleException(CreatorNotCreatedException e){
-        BadResponse response=new BadResponse(
-                e.getMessage(),
-                HttpStatus.BAD_REQUEST,
-                LocalDateTime.now()
-        );
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler
     private ResponseEntity<BadResponse> handleException(CreatorNotUpdatedException e){
         BadResponse response=new BadResponse(
                 e.getMessage(),
                 HttpStatus.BAD_REQUEST,
                 LocalDateTime.now()
+        );
+        return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NotCreatedException.class)
+    private ResponseEntity<BadResponseWithErrorsList> handleException(NotCreatedException e){
+        BadResponseWithErrorsList response=new BadResponseWithErrorsList(
+                HttpStatus.BAD_REQUEST,
+                LocalDateTime.now(),
+                e.getErrors()
         );
         return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
     }
