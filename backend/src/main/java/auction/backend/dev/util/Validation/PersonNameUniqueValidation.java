@@ -1,17 +1,19 @@
 package auction.backend.dev.util.Validation;
 
 import auction.backend.dev.models.Person;
-import auction.backend.dev.services.PersonServiceValidation;
+import auction.backend.dev.services.PeopleServiceValidation;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import java.util.Optional;
 
+@Component
 public class PersonNameUniqueValidation implements Validator {
 
-    private final PersonServiceValidation personServiceValidation;
+    private final PeopleServiceValidation personServiceValidation;
 
-    public PersonNameUniqueValidation(PersonServiceValidation personServiceValidation){
+    public PersonNameUniqueValidation(PeopleServiceValidation personServiceValidation){
         this.personServiceValidation=personServiceValidation;
     }
 

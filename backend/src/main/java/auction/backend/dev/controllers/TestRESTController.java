@@ -4,7 +4,7 @@ import auction.backend.dev.util.Excaption.Person.PeopleNotFoundException;
 import auction.backend.dev.util.PeopleDTOResponse;
 import auction.backend.dev.dto.PersonDTO;
 import auction.backend.dev.models.Person;
-import auction.backend.dev.services.PersonService;
+import auction.backend.dev.services.PeopleService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +20,12 @@ import java.util.List;
 @RequestMapping(path = "test/v1")
 public class TestRESTController {
 
-    private final PersonService personService;
+    private final PeopleService personService;
     private final ModelMapper modelMapper;
 
-    public TestRESTController(PersonService personService,
+    public TestRESTController(PeopleService peopleService,
                               ModelMapper modelMapper){
-        this.personService=personService;
+        this.personService=peopleService;
         this.modelMapper=modelMapper;
     }
 

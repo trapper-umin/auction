@@ -1,7 +1,7 @@
 package auction.backend.dev.services;
 
 import auction.backend.dev.models.Person;
-import auction.backend.dev.repositories.PersonRepository;
+import auction.backend.dev.repositories.PeopleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,15 +9,15 @@ import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
-public class PersonService {
+public class PeopleService {
 
-    private final PersonRepository personRepository;
+    private final PeopleRepository peopleRepository;
 
-    public PersonService(PersonRepository personRepository){
-        this.personRepository=personRepository;
+    public PeopleService(PeopleRepository peopleRepository){
+        this.peopleRepository=peopleRepository;
     }
 
     public List<Person> getPeople(){
-        return personRepository.findAll();
+        return peopleRepository.findAll();
     }
 }
