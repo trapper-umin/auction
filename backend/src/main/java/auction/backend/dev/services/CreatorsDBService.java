@@ -3,8 +3,7 @@ package auction.backend.dev.services;
 import auction.backend.dev.models.Creator;
 import auction.backend.dev.repositories.CreatorsRepository;
 import auction.backend.dev.services.common.ICommonService;
-import auction.backend.dev.util.Excaption.Creator.CreatorNotFoundException;
-import auction.backend.dev.util.Excaption.Creator.CreatorsNotFoundException;
+import auction.backend.dev.util.Excaption.common.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,14 +24,14 @@ public class CreatorsDBService implements ICommonService<Creator> {
     public List<Creator> getAll(){
         List<Creator> creators=creatorsRepository.findAll();
         if(creators.size()==0)
-            throw new CreatorsNotFoundException("There are no creators in the database");
+            throw new NotFoundException("There are no creators in the database");
         return creators;
     }
 
     public Creator get(int id){
         Optional<Creator> creator=creatorsRepository.findById(id);
         if(creator.isEmpty())
-            throw new CreatorNotFoundException("Creator with id "+id+" not found");
+            throw new NotFoundException("Creator with id "+id+" not found");
         return creator.get();
     }
 
@@ -51,8 +50,7 @@ public class CreatorsDBService implements ICommonService<Creator> {
     public void update(int id, Creator creator){
         Optional<Creator> creatorBeforeUpdate=creatorsRepository.findById(id);
         if(creatorBeforeUpdate.isEmpty())
-            throw new CreatorNotFoundException("Creator with id "+id+" not found");
-
+            throw new NotFoundException("Creator with id "+id+" not found");
         creator.setId(id);
         creator.setCreatedAt(creatorBeforeUpdate.get().getCreatedAt());
         creator.setUpdatedAt(LocalDateTime.now());
@@ -61,6 +59,8 @@ public class CreatorsDBService implements ICommonService<Creator> {
 
     @Transactional
     public void delete(int id){
+        if(creatorsRepository.findById(id).isEmpty())
+            throw new NotFoundException("Creator with id "+id+" not found");
         creatorsRepository.deleteById(id);
     }
 }

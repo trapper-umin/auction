@@ -6,12 +6,14 @@ import auction.backend.dev.services.CreatorsService;
 import auction.backend.dev.util.CreatorResponse;
 import auction.backend.dev.util.CreatorsCollectionResponse;
 import auction.backend.dev.util.GoodResponse;
+import io.swagger.annotations.Api;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+@Api
 public abstract class ImplCreatorsControllerAbstract implements ICreatorsController {
 
     private final CreatorsService creatorsService;

@@ -4,9 +4,9 @@ import auction.backend.dev.dto.CreatorDTO;
 import auction.backend.dev.models.Creator;
 import auction.backend.dev.util.CreatorResponse;
 import auction.backend.dev.util.CreatorsCollectionResponse;
-import auction.backend.dev.util.Excaption.Creator.CreatorNotUpdatedException;
 import auction.backend.dev.util.Excaption.common.ErrorMessage;
 import auction.backend.dev.util.Excaption.common.NotCreatedException;
+import auction.backend.dev.util.Excaption.common.NotUpdatedException;
 import auction.backend.dev.util.GoodResponse;
 import auction.backend.dev.util.Validation.CreatorNameUniqueValidation;
 import org.modelmapper.ModelMapper;
@@ -63,12 +63,12 @@ public class CreatorsService {
                                                   BindingResult bindingResult){
         creatorNameUniqueValidation.validate(creatorDTO,bindingResult);
         if(bindingResult.hasErrors()){
-            List<ErrorMessage> message=new ArrayList<>();
+            List<ErrorMessage> messages=new ArrayList<>();
             List<FieldError> errors=bindingResult.getFieldErrors();
             for(FieldError error : errors){
-                message.add(new ErrorMessage(error.getField(),error.getDefaultMessage()));
+                messages.add(new ErrorMessage(error.getField(),error.getDefaultMessage()));
             }
-            throw new NotCreatedException(message);
+            throw new NotCreatedException(messages);
         }
         creatorsDBService.create(convertToCreator(creatorDTO));
         CreatorResponse response=new CreatorResponse(
@@ -84,15 +84,12 @@ public class CreatorsService {
                                                   BindingResult bindingResult){
         creatorNameUniqueValidation.validate(creatorDTO,bindingResult);
         if(bindingResult.hasErrors()){
-            StringBuilder message=new StringBuilder();
+            List<ErrorMessage> messages=new ArrayList<>();
             List<FieldError> errors=bindingResult.getFieldErrors();
             for(FieldError error : errors){
-                message.append(error.getField())
-                        .append("-")
-                        .append(error.getDefaultMessage())
-                        .append(";");
+                messages.add(new ErrorMessage(error.getField(),error.getDefaultMessage()));
             }
-            throw new CreatorNotUpdatedException(message.toString());
+            throw new NotUpdatedException(messages);
         }
         creatorsDBService.update(id,convertToCreator(creatorDTO));
         CreatorResponse response=new CreatorResponse(
@@ -104,7 +101,6 @@ public class CreatorsService {
     }
 
     public ResponseEntity<GoodResponse> delete(int id){
-        //TODO добавить обработку ошибки, когда пользователь с таким id не найден
         creatorsDBService.delete(id);
         GoodResponse response=new GoodResponse(
                 "Creator with id "+id+" was deleted",
