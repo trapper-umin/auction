@@ -1,9 +1,8 @@
 package auction.backend.dev.dto;
 
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import jakarta.validation.constraints.NotEmpty;
 
 @Data
 public class CreatorDTO {

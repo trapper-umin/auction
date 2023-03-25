@@ -6,14 +6,14 @@ import auction.backend.dev.services.CreatorsService;
 import auction.backend.dev.util.CreatorResponse;
 import auction.backend.dev.util.CreatorsCollectionResponse;
 import auction.backend.dev.util.GoodResponse;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@Api
+@Tag(name = "Creators",description = "Тестовый REST контроллер, позволябщий совершать CRUD с создатлеями этого сайта")
 public abstract class ImplCreatorsControllerAbstract implements ICreatorsController {
 
     private final CreatorsService creatorsService;

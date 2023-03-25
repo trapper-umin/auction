@@ -9,5 +9,5 @@ import java.util.List;
 @AllArgsConstructor
 public class NotUpdatedException extends RuntimeException{
 
-    private List<ErrorMessage> errors;
+    private List<ErrorInfo> errors;
 }

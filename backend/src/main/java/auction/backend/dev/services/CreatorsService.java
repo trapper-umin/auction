@@ -4,7 +4,7 @@ import auction.backend.dev.dto.CreatorDTO;
 import auction.backend.dev.models.Creator;
 import auction.backend.dev.util.CreatorResponse;
 import auction.backend.dev.util.CreatorsCollectionResponse;
-import auction.backend.dev.util.Excaption.common.ErrorMessage;
+import auction.backend.dev.util.Excaption.common.ErrorInfo;
 import auction.backend.dev.util.Excaption.common.NotCreatedException;
 import auction.backend.dev.util.Excaption.common.NotUpdatedException;
 import auction.backend.dev.util.GoodResponse;
@@ -63,12 +63,12 @@ public class CreatorsService {
                                                   BindingResult bindingResult){
         creatorNameUniqueValidation.validate(creatorDTO,bindingResult);
         if(bindingResult.hasErrors()){
-            List<ErrorMessage> messages=new ArrayList<>();
+            List<ErrorInfo> info=new ArrayList<>();
             List<FieldError> errors=bindingResult.getFieldErrors();
             for(FieldError error : errors){
-                messages.add(new ErrorMessage(error.getField(),error.getDefaultMessage()));
+                info.add(new ErrorInfo(error.getField(),error.getDefaultMessage()));
             }
-            throw new NotCreatedException(messages);
+            throw new NotCreatedException(info);
         }
         creatorsDBService.create(convertToCreator(creatorDTO));
         CreatorResponse response=new CreatorResponse(
@@ -84,12 +84,12 @@ public class CreatorsService {
                                                   BindingResult bindingResult){
         creatorNameUniqueValidation.validate(creatorDTO,bindingResult);
         if(bindingResult.hasErrors()){
-            List<ErrorMessage> messages=new ArrayList<>();
+            List<ErrorInfo> info=new ArrayList<>();
             List<FieldError> errors=bindingResult.getFieldErrors();
             for(FieldError error : errors){
-                messages.add(new ErrorMessage(error.getField(),error.getDefaultMessage()));
+                info.add(new ErrorInfo(error.getField(),error.getDefaultMessage()));
             }
-            throw new NotUpdatedException(messages);
+            throw new NotUpdatedException(info);
         }
         creatorsDBService.update(id,convertToCreator(creatorDTO));
         CreatorResponse response=new CreatorResponse(
