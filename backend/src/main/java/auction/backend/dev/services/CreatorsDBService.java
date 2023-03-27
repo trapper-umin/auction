@@ -22,7 +22,7 @@ public class CreatorsDBService implements ICommonService<Creator> {
     }
 
     public List<Creator> getAll(){
-        List<Creator> creators=creatorsRepository.findAll();
+        List<Creator>creators=creatorsRepository.findAll();
         if(creators.size()==0)
             throw new NotFoundException("There are no creators in the database");
         return creators;
@@ -31,7 +31,7 @@ public class CreatorsDBService implements ICommonService<Creator> {
     public Creator get(int id){
         Optional<Creator> creator=creatorsRepository.findById(id);
         if(creator.isEmpty())
-            throw new NotFoundException("Creator with id "+id+" not found");
+            throw new NotFoundException("Creator with ID "+id+" not found");
         return creator.get();
     }
 
@@ -50,7 +50,7 @@ public class CreatorsDBService implements ICommonService<Creator> {
     public void update(int id, Creator creator){
         Optional<Creator> creatorBeforeUpdate=creatorsRepository.findById(id);
         if(creatorBeforeUpdate.isEmpty())
-            throw new NotFoundException("Creator with id "+id+" not found");
+            throw new NotFoundException("Creator with ID "+id+" not found");
         creator.setId(id);
         creator.setCreatedAt(creatorBeforeUpdate.get().getCreatedAt());
         creator.setUpdatedAt(LocalDateTime.now());

@@ -1,6 +1,7 @@
 package auction.backend.dev.controllers.interfaces;
 
 import auction.backend.dev.dto.PersonDTO;
+import auction.backend.dev.util.Response.GoodResponse;
 import auction.backend.dev.util.Response.ResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -58,6 +59,6 @@ public interface IPeopleController {
             @ApiResponse(responseCode = "404",description = "Not found person with this ID")
     })
     @DeleteMapping("/{id}")
-    ResponseEntity<ResponseDTO<PersonDTO>> delete(
+    ResponseEntity<GoodResponse> delete(
             @PathVariable("id") @Parameter(description = "Person ID") int id);
 }

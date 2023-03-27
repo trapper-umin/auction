@@ -67,14 +67,9 @@ public class CreatorsService {
     public ResponseEntity<ResponseDTO<CreatorDTO>> create(CreatorDTO creatorDTO,
                                                   BindingResult bindingResult){
         creatorNameUniqueValidation.validate(creatorDTO,bindingResult);
-        if(bindingResult.hasErrors()){
-            List<ErrorInfo> info=new ArrayList<>();
-            List<FieldError> errors=bindingResult.getFieldErrors();
-            for(FieldError error : errors){
-                info.add(new ErrorInfo(error.getField(),error.getDefaultMessage()));
-            }
-            throw new NotCreatedException(info);
-        }
+        if(bindingResult.hasErrors())
+           detectErrors("create",bindingResult);
+
         creatorsDBService.create(convertToCreator(creatorDTO));
 
         ResponseDTO<CreatorDTO> response=new ResponseDTO<>(
@@ -90,14 +85,8 @@ public class CreatorsService {
                                                   CreatorDTO creatorDTO,
                                                   BindingResult bindingResult){
         creatorNameUniqueValidation.validate(creatorDTO,bindingResult);
-        if(bindingResult.hasErrors()){
-            List<ErrorInfo> info=new ArrayList<>();
-            List<FieldError> errors=bindingResult.getFieldErrors();
-            for(FieldError error : errors){
-                info.add(new ErrorInfo(error.getField(),error.getDefaultMessage()));
-            }
-            throw new NotUpdatedException(info);
-        }
+        if(bindingResult.hasErrors())
+            detectErrors("update",bindingResult);
         creatorsDBService.update(id,convertToCreator(creatorDTO));
 
         ResponseDTO<CreatorDTO> response=new ResponseDTO<>(
@@ -131,5 +120,16 @@ public class CreatorsService {
         List<CreatorDTO>entity=new ArrayList<>();
         entity.add(creatorDTO);
         return entity;
+    }
+
+    private void detectErrors(String operation,
+                              BindingResult bindingResult){
+        List<ErrorInfo> info=new ArrayList<>();
+        List<FieldError> errors=bindingResult.getFieldErrors();
+        for(FieldError error : errors)
+            info.add(new ErrorInfo(error.getField(),error.getDefaultMessage()));
+        if(operation.equals("create"))
+            throw new NotCreatedException(info);
+        else throw new NotUpdatedException(info);
     }
 }
