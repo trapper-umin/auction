@@ -1,7 +1,7 @@
 package auction.backend.dev.controllers;
 
 import auction.backend.dev.util.Excaption.Person.PeopleNotFoundException;
-import auction.backend.dev.util.PeopleDTOResponse;
+import auction.backend.dev.util.Response.PeopleDTOResponse;
 import auction.backend.dev.dto.PersonDTO;
 import auction.backend.dev.models.Person;
 import auction.backend.dev.services.PeopleService;
@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 @RestController
 @RequestMapping(path = "test/v1")
 public class TestRESTController {

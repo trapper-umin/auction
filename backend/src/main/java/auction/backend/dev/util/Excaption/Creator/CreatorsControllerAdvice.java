@@ -1,7 +1,7 @@
 package auction.backend.dev.util.Excaption.Creator;
 
-import auction.backend.dev.util.BadResponse;
-import auction.backend.dev.util.BadResponseWithErrorsList;
+import auction.backend.dev.util.Response.BadResponse;
+import auction.backend.dev.util.Response.BadResponseWithErrorsList;
 import auction.backend.dev.util.Excaption.common.NotCreatedException;
 import auction.backend.dev.util.Excaption.common.NotFoundException;
 import auction.backend.dev.util.Excaption.common.NotUpdatedException;

@@ -1,17 +1,18 @@
-package auction.backend.dev.util;
+package auction.backend.dev.util.Response;
 
-import auction.backend.dev.dto.CreatorDTO;
+import auction.backend.dev.util.Excaption.common.ErrorInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class CreatorResponse {
+public class BadResponseWithErrorsList{
 
     private HttpStatus status;
     private LocalDateTime time;
-    private CreatorDTO creator;
+    private List<ErrorInfo> errors;
 }

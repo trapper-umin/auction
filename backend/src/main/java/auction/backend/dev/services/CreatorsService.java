@@ -1,13 +1,13 @@
 package auction.backend.dev.services;
 
+import auction.backend.dev.base.EntityTag;
 import auction.backend.dev.dto.CreatorDTO;
 import auction.backend.dev.models.Creator;
-import auction.backend.dev.util.CreatorResponse;
-import auction.backend.dev.util.CreatorsCollectionResponse;
 import auction.backend.dev.util.Excaption.common.ErrorInfo;
 import auction.backend.dev.util.Excaption.common.NotCreatedException;
 import auction.backend.dev.util.Excaption.common.NotUpdatedException;
-import auction.backend.dev.util.GoodResponse;
+import auction.backend.dev.util.Response.GoodResponse;
+import auction.backend.dev.util.Response.ResponseDTO;
 import auction.backend.dev.util.Validation.CreatorNameUniqueValidation;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -36,30 +36,35 @@ public class CreatorsService {
         this.creatorsDBService = creatorsDBService;
     }
 
-    public ResponseEntity<CreatorsCollectionResponse> getAll(){
+    public ResponseEntity<ResponseDTO<CreatorDTO>> getAll(){
         List<Creator> creators= creatorsDBService.getAll();
         List<CreatorDTO> creatorDTOS=new ArrayList<>();
         for(Creator creator : creators){
             creatorDTOS.add(convertToCreatorDTO(creator));
         }
-        CreatorsCollectionResponse response=new CreatorsCollectionResponse(creatorDTOS.size(),
-                LocalDateTime.now(),
-                HttpStatus.OK,
-                creatorDTOS);
-        return new ResponseEntity<>(response,HttpStatus.OK);
-    }
 
-    public ResponseEntity<CreatorResponse> get(int id){
-        CreatorDTO creator=convertToCreatorDTO(creatorsDBService.get(id));
-        CreatorResponse response=new CreatorResponse(
+        ResponseDTO<CreatorDTO> response=new ResponseDTO<>(
                 HttpStatus.OK,
+                EntityTag.CREATOR,
                 LocalDateTime.now(),
-                creator
+                creatorDTOS
         );
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    public ResponseEntity<CreatorResponse> create(CreatorDTO creatorDTO,
+    public ResponseEntity<ResponseDTO<CreatorDTO>> get(int id){
+        CreatorDTO creator=convertToCreatorDTO(creatorsDBService.get(id));
+
+        ResponseDTO<CreatorDTO> response=new ResponseDTO<>(
+                HttpStatus.OK,
+                EntityTag.CREATOR,
+                LocalDateTime.now(),
+                wrapCreatorDTO(creator)
+        );
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
+    public ResponseEntity<ResponseDTO<CreatorDTO>> create(CreatorDTO creatorDTO,
                                                   BindingResult bindingResult){
         creatorNameUniqueValidation.validate(creatorDTO,bindingResult);
         if(bindingResult.hasErrors()){
@@ -71,15 +76,17 @@ public class CreatorsService {
             throw new NotCreatedException(info);
         }
         creatorsDBService.create(convertToCreator(creatorDTO));
-        CreatorResponse response=new CreatorResponse(
+
+        ResponseDTO<CreatorDTO> response=new ResponseDTO<>(
                 HttpStatus.OK,
+                EntityTag.CREATOR,
                 LocalDateTime.now(),
-                creatorDTO
+                wrapCreatorDTO(creatorDTO)
         );
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    public ResponseEntity<CreatorResponse> update(int id,
+    public ResponseEntity<ResponseDTO<CreatorDTO>> update(int id,
                                                   CreatorDTO creatorDTO,
                                                   BindingResult bindingResult){
         creatorNameUniqueValidation.validate(creatorDTO,bindingResult);
@@ -92,10 +99,12 @@ public class CreatorsService {
             throw new NotUpdatedException(info);
         }
         creatorsDBService.update(id,convertToCreator(creatorDTO));
-        CreatorResponse response=new CreatorResponse(
+
+        ResponseDTO<CreatorDTO> response=new ResponseDTO<>(
                 HttpStatus.OK,
+                EntityTag.CREATOR,
                 LocalDateTime.now(),
-                creatorDTO
+                wrapCreatorDTO(creatorDTO)
         );
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -116,5 +125,11 @@ public class CreatorsService {
 
     private CreatorDTO convertToCreatorDTO(Creator creator){
         return modelMapper.map(creator, CreatorDTO.class);
+    }
+
+    private List<CreatorDTO> wrapCreatorDTO(CreatorDTO creatorDTO){
+        List<CreatorDTO>entity=new ArrayList<>();
+        entity.add(creatorDTO);
+        return entity;
     }
 }

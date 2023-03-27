@@ -1,4 +1,4 @@
-package auction.backend.dev.util;
+package auction.backend.dev.util.Response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

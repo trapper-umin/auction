@@ -1,4 +1,4 @@
-package auction.backend.dev.util;
+package auction.backend.dev.util.Response;
 
 import auction.backend.dev.dto.PersonDTO;
 
