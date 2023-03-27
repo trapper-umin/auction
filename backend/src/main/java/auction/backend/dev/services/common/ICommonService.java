@@ -3,7 +3,6 @@ package auction.backend.dev.services.common;
 import auction.backend.dev.models.AbstractEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ICommonService<E extends AbstractEntity> {
 
