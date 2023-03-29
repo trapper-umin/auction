@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.time.LocalDateTime;
 
 @RestControllerAdvice(annotations = PeopleExceptionHandler.class)
-public class PersonControllerAdvice {
+public class PeopleControllerAdvice {
 
     @ExceptionHandler(NotFoundException.class)
     private ResponseEntity<BadResponse>handleException(NotFoundException e){
