@@ -1,8 +1,7 @@
 package auction.backend.dev.util.Validation;
 
 import auction.backend.dev.dto.CreatorDTO;
-import auction.backend.dev.services.CreatorsDBService;
-import auction.backend.dev.services.CreatorsService;
+import auction.backend.dev.services.Creator.CreatorsDBService;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;

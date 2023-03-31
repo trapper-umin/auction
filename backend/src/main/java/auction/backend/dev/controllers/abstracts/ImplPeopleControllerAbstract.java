@@ -2,7 +2,7 @@ package auction.backend.dev.controllers.abstracts;
 
 import auction.backend.dev.controllers.interfaces.IPeopleController;
 import auction.backend.dev.dto.PersonDTO;
-import auction.backend.dev.services.PeopleService;
+import auction.backend.dev.services.Person.PeopleService;
 import auction.backend.dev.util.Response.GoodResponse;
 import auction.backend.dev.util.Response.ResponseDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;

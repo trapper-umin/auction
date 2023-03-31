@@ -1,5 +1,6 @@
 package auction.backend.dev.models;
 
+import auction.backend.dev.models.common.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Deal extends AbstractEntity{
+public class Deal extends AbstractEntity {
 
     @Id
     @Column(name = "deal_id")

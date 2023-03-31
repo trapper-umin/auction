@@ -2,7 +2,7 @@ package auction.backend.dev.util.Validation;
 
 import auction.backend.dev.dto.PersonDTO;
 import auction.backend.dev.models.Person;
-import auction.backend.dev.services.PeopleServiceValidation;
+import auction.backend.dev.services.Person.PeopleServiceValidation;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;

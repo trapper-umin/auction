@@ -1,4 +1,4 @@
-package auction.backend.dev.services;
+package auction.backend.dev.services.Creator;
 
 import auction.backend.dev.models.Creator;
 import auction.backend.dev.repositories.CreatorsRepository;

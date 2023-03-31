@@ -1,6 +1,7 @@
 package auction.backend.dev.models;
 
 
+import auction.backend.dev.models.common.AbstractEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "creator")
-public class Creator extends AbstractEntity{
+public class Creator extends AbstractEntity {
 
     @Id
     @Column(name = "creator_id")

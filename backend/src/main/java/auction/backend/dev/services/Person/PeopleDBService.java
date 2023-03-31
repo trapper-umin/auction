@@ -1,7 +1,8 @@
-package auction.backend.dev.services;
+package auction.backend.dev.services.Person;
 
 import auction.backend.dev.models.Person;
 import auction.backend.dev.repositories.PeopleRepository;
+import auction.backend.dev.services.common.ICommonService;
 import auction.backend.dev.util.Excaption.common.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +13,7 @@ import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
-public class PeopleDBService {
+public class PeopleDBService implements ICommonService<Person> {
 
     private final PeopleRepository peopleRepository;
 
@@ -58,5 +59,4 @@ public class PeopleDBService {
             throw new  NotFoundException("Person with ID "+id+" not found");
         peopleRepository.deleteById(id);
     }
-
 }

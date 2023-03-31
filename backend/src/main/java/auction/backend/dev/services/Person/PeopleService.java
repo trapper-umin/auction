@@ -1,4 +1,4 @@
-package auction.backend.dev.services;
+package auction.backend.dev.services.Person;
 
 import auction.backend.dev.base.EntityTag;
 import auction.backend.dev.dto.PersonDTO;

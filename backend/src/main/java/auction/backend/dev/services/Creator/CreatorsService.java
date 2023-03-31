@@ -1,4 +1,4 @@
-package auction.backend.dev.services;
+package auction.backend.dev.services.Creator;
 
 import auction.backend.dev.base.EntityTag;
 import auction.backend.dev.dto.CreatorDTO;

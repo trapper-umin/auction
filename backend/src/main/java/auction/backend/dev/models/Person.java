@@ -1,5 +1,6 @@
 package auction.backend.dev.models;
 
+import auction.backend.dev.models.common.AbstractEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Person extends AbstractEntity{
+public class Person extends AbstractEntity {
 
     @Id
     @Column(name = "person_id")
