@@ -1,6 +1,6 @@
 package auction.backend.dev.services.common;
 
-import auction.backend.dev.models.AbstractEntity;
+import auction.backend.dev.models.common.AbstractEntity;
 
 import java.util.List;
 

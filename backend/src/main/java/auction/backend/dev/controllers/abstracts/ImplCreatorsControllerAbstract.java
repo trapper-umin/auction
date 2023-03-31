@@ -2,7 +2,7 @@ package auction.backend.dev.controllers.abstracts;
 
 import auction.backend.dev.controllers.interfaces.ICreatorsController;
 import auction.backend.dev.dto.CreatorDTO;
-import auction.backend.dev.services.CreatorsService;
+import auction.backend.dev.services.Creator.CreatorsService;
 import auction.backend.dev.util.Response.GoodResponse;
 import auction.backend.dev.util.Response.ResponseDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;

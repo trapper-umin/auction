@@ -1,6 +1,7 @@
-package auction.backend.dev.services;
+package auction.backend.dev.services.Creator;
 
 import auction.backend.dev.base.EntityTag;
+import auction.backend.dev.base.ResponseStatusTag;
 import auction.backend.dev.dto.CreatorDTO;
 import auction.backend.dev.models.Creator;
 import auction.backend.dev.util.Excaption.common.ErrorInfo;
@@ -44,7 +45,7 @@ public class CreatorsService {
         }
 
         ResponseDTO<CreatorDTO> response=new ResponseDTO<>(
-                HttpStatus.OK,
+                ResponseStatusTag.OK,
                 EntityTag.CREATOR,
                 LocalDateTime.now(),
                 creatorDTOS
@@ -56,7 +57,7 @@ public class CreatorsService {
         CreatorDTO creator=convertToCreatorDTO(creatorsDBService.get(id));
 
         ResponseDTO<CreatorDTO> response=new ResponseDTO<>(
-                HttpStatus.OK,
+                ResponseStatusTag.OK,
                 EntityTag.CREATOR,
                 LocalDateTime.now(),
                 wrapCreatorDTO(creator)
@@ -67,18 +68,13 @@ public class CreatorsService {
     public ResponseEntity<ResponseDTO<CreatorDTO>> create(CreatorDTO creatorDTO,
                                                   BindingResult bindingResult){
         creatorNameUniqueValidation.validate(creatorDTO,bindingResult);
-        if(bindingResult.hasErrors()){
-            List<ErrorInfo> info=new ArrayList<>();
-            List<FieldError> errors=bindingResult.getFieldErrors();
-            for(FieldError error : errors){
-                info.add(new ErrorInfo(error.getField(),error.getDefaultMessage()));
-            }
-            throw new NotCreatedException(info);
-        }
+        if(bindingResult.hasErrors())
+           detectErrors("create",bindingResult);
+
         creatorsDBService.create(convertToCreator(creatorDTO));
 
         ResponseDTO<CreatorDTO> response=new ResponseDTO<>(
-                HttpStatus.OK,
+                ResponseStatusTag.OK,
                 EntityTag.CREATOR,
                 LocalDateTime.now(),
                 wrapCreatorDTO(creatorDTO)
@@ -90,18 +86,12 @@ public class CreatorsService {
                                                   CreatorDTO creatorDTO,
                                                   BindingResult bindingResult){
         creatorNameUniqueValidation.validate(creatorDTO,bindingResult);
-        if(bindingResult.hasErrors()){
-            List<ErrorInfo> info=new ArrayList<>();
-            List<FieldError> errors=bindingResult.getFieldErrors();
-            for(FieldError error : errors){
-                info.add(new ErrorInfo(error.getField(),error.getDefaultMessage()));
-            }
-            throw new NotUpdatedException(info);
-        }
+        if(bindingResult.hasErrors())
+            detectErrors("update",bindingResult);
         creatorsDBService.update(id,convertToCreator(creatorDTO));
 
         ResponseDTO<CreatorDTO> response=new ResponseDTO<>(
-                HttpStatus.OK,
+                ResponseStatusTag.OK,
                 EntityTag.CREATOR,
                 LocalDateTime.now(),
                 wrapCreatorDTO(creatorDTO)
@@ -131,5 +121,16 @@ public class CreatorsService {
         List<CreatorDTO>entity=new ArrayList<>();
         entity.add(creatorDTO);
         return entity;
+    }
+
+    private void detectErrors(String operation,
+                              BindingResult bindingResult){
+        List<ErrorInfo> info=new ArrayList<>();
+        List<FieldError> errors=bindingResult.getFieldErrors();
+        for(FieldError error : errors)
+            info.add(new ErrorInfo(error.getField(),error.getDefaultMessage()));
+        if(operation.equals("create"))
+            throw new NotCreatedException(info);
+        else throw new NotUpdatedException(info);
     }
 }

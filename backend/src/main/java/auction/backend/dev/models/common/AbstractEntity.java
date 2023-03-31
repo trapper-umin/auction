@@ -1,4 +1,4 @@
-package auction.backend.dev.models;
+package auction.backend.dev.models.common;
 
 import java.io.Serializable;
 

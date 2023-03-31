@@ -2,7 +2,8 @@ package auction.backend.dev.controllers.abstracts;
 
 import auction.backend.dev.controllers.interfaces.IPeopleController;
 import auction.backend.dev.dto.PersonDTO;
-import auction.backend.dev.services.PeopleService;
+import auction.backend.dev.services.Person.PeopleService;
+import auction.backend.dev.util.Response.GoodResponse;
 import auction.backend.dev.util.Response.ResponseDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -19,26 +20,26 @@ public abstract class ImplPeopleControllerAbstract implements IPeopleController 
 
     @Override
     public ResponseEntity<ResponseDTO<PersonDTO>> getAll() {
-        return null;
+        return peopleService.getAll();
     }
 
     @Override
     public ResponseEntity<ResponseDTO<PersonDTO>> get(int id) {
-        return null;
+        return peopleService.get(id);
     }
 
     @Override
     public ResponseEntity<ResponseDTO<PersonDTO>> create(PersonDTO personDTO, BindingResult bindingResult) {
-        return null;
+        return peopleService.create(personDTO,bindingResult);
     }
 
     @Override
     public ResponseEntity<ResponseDTO<PersonDTO>> update(int id, PersonDTO personDTO, BindingResult bindingResult) {
-        return null;
+        return peopleService.update(id,personDTO,bindingResult);
     }
 
     @Override
-    public ResponseEntity<ResponseDTO<PersonDTO>> delete(int id) {
-        return null;
+    public ResponseEntity<GoodResponse> delete(int id) {
+        return peopleService.delete(id);
     }
 }

@@ -11,32 +11,37 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "person")
+@Table(name = "item")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Person extends AbstractEntity {
+public class Item extends AbstractEntity {
 
     @Id
-    @Column(name = "person_id")
+    @Column(name = "item_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
     @NotEmpty(message = "Name should be not empty")
-    @Size(min=3,max = 255,message = "Name should be between 3 and 255")
+    @Size(min = 4,max = 255,message = "Name size should be between 4 and 255")
+    @Column(name="name")
     private String name;
 
-    @Column(name = "password")
-    @NotEmpty(message = "Password should be not empty")
-    @Size(min = 10,max = 50,message = "Password size should be between 10 and 50")
-    private String password;
+    @NotEmpty(message = "Description should be not empty")
+    @Size(min = 4,max = 255,message = "Description size should be between 4 and 255")
+    @Column(name = "description")
+    private String description;
 
-    @Column(name = "cash")
-    @NotNull(message = "Cash should be not empty")
-    @Min(value = 0,message = "Minimal size of sash is 0")
-    private int cash;
+    @NotNull(message = "Cost should be not null")
+    @Min(value = 0,message = "Minimal size of cost is 0")
+    @Column(name = "cost")
+    private int cost;
+
+    @NotNull(message = "Step should be not null")
+    @Min(value = 5, message = "Minimal step is 5")
+    @Column(name = "step")
+    private int step;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
