@@ -25,21 +25,21 @@ public abstract class ImplItemsControllerAbstract implements IItemsController {
 
     @Override
     public ResponseEntity<ResponseDTO<ItemDTO>> get(int id) {
-        return null;
+        return itemsService.get(id);
     }
 
     @Override
     public ResponseEntity<ResponseDTO<ItemDTO>> create(ItemDTO itemDTO, BindingResult bindingResult) {
-        return null;
+        return itemsService.create(itemDTO,bindingResult);
     }
 
     @Override
     public ResponseEntity<ResponseDTO<ItemDTO>> update(int id, ItemDTO itemDTO, BindingResult bindingResult) {
-        return null;
+        return itemsService.update(id,itemDTO,bindingResult);
     }
 
     @Override
     public ResponseEntity<GoodResponse> delete(int id) {
-        return null;
+        return itemsService.delete(id);
     }
 }

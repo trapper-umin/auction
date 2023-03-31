@@ -1,6 +1,7 @@
 package auction.backend.dev.util.Response;
 
 import auction.backend.dev.base.EntityTag;
+import auction.backend.dev.base.ResponseStatusTag;
 import auction.backend.dev.dto.common.AbstractDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ResponseDTO<E extends AbstractDTO> {
 
-    private HttpStatus status;
+    private ResponseStatusTag status;
 
     private EntityTag tag;
 

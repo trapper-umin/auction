@@ -60,5 +60,5 @@ public interface IItemsController {
     })
     @DeleteMapping("/{id}")
     ResponseEntity<GoodResponse> delete(
-            @PathVariable("id")int id);
+            @Parameter(description = "Item ID") @PathVariable("id")int id);
 }

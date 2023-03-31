@@ -1,6 +1,7 @@
 package auction.backend.dev.services.Creator;
 
 import auction.backend.dev.base.EntityTag;
+import auction.backend.dev.base.ResponseStatusTag;
 import auction.backend.dev.dto.CreatorDTO;
 import auction.backend.dev.models.Creator;
 import auction.backend.dev.util.Excaption.common.ErrorInfo;
@@ -44,7 +45,7 @@ public class CreatorsService {
         }
 
         ResponseDTO<CreatorDTO> response=new ResponseDTO<>(
-                HttpStatus.OK,
+                ResponseStatusTag.OK,
                 EntityTag.CREATOR,
                 LocalDateTime.now(),
                 creatorDTOS
@@ -56,7 +57,7 @@ public class CreatorsService {
         CreatorDTO creator=convertToCreatorDTO(creatorsDBService.get(id));
 
         ResponseDTO<CreatorDTO> response=new ResponseDTO<>(
-                HttpStatus.OK,
+                ResponseStatusTag.OK,
                 EntityTag.CREATOR,
                 LocalDateTime.now(),
                 wrapCreatorDTO(creator)
@@ -73,7 +74,7 @@ public class CreatorsService {
         creatorsDBService.create(convertToCreator(creatorDTO));
 
         ResponseDTO<CreatorDTO> response=new ResponseDTO<>(
-                HttpStatus.OK,
+                ResponseStatusTag.OK,
                 EntityTag.CREATOR,
                 LocalDateTime.now(),
                 wrapCreatorDTO(creatorDTO)
@@ -90,7 +91,7 @@ public class CreatorsService {
         creatorsDBService.update(id,convertToCreator(creatorDTO));
 
         ResponseDTO<CreatorDTO> response=new ResponseDTO<>(
-                HttpStatus.OK,
+                ResponseStatusTag.OK,
                 EntityTag.CREATOR,
                 LocalDateTime.now(),
                 wrapCreatorDTO(creatorDTO)

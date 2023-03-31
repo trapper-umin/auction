@@ -1,6 +1,7 @@
 package auction.backend.dev.services.Person;
 
 import auction.backend.dev.base.EntityTag;
+import auction.backend.dev.base.ResponseStatusTag;
 import auction.backend.dev.dto.PersonDTO;
 import auction.backend.dev.models.Person;
 import auction.backend.dev.util.Excaption.common.ErrorInfo;
@@ -42,7 +43,7 @@ public class PeopleService {
             peopleDTOS.add(convertToPersonDTO(person));
 
         ResponseDTO<PersonDTO>response=new ResponseDTO<>(
-                HttpStatus.OK,
+                ResponseStatusTag.OK,
                 EntityTag.PERSON,
                 LocalDateTime.now(),
                 peopleDTOS
@@ -54,7 +55,7 @@ public class PeopleService {
         PersonDTO person=convertToPersonDTO(peopleDBService.get(id));
 
         ResponseDTO<PersonDTO>response=new ResponseDTO<>(
-                HttpStatus.OK,
+                ResponseStatusTag.OK,
                 EntityTag.PERSON,
                 LocalDateTime.now(),
                 wrapPersonDTO(person)
@@ -67,7 +68,7 @@ public class PeopleService {
         validation("create",personDTO,bindingResult);
         peopleDBService.create(convertToPerson(personDTO));
         ResponseDTO<PersonDTO>response=new ResponseDTO<>(
-                HttpStatus.OK,
+                ResponseStatusTag.OK,
                 EntityTag.PERSON,
                 LocalDateTime.now(),
                 wrapPersonDTO(personDTO)
@@ -81,7 +82,7 @@ public class PeopleService {
         validation("update",personDTO,bindingResult);
         peopleDBService.update(id,convertToPerson(personDTO));
         ResponseDTO<PersonDTO>response=new ResponseDTO<>(
-                HttpStatus.OK,
+                ResponseStatusTag.OK,
                 EntityTag.PERSON,
                 LocalDateTime.now(),
                 wrapPersonDTO(personDTO)
