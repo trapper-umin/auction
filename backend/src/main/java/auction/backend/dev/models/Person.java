@@ -1,17 +1,20 @@
 package auction.backend.dev.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Data
-@AllArgsConstructor
 @Table(name = "person")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Person extends AbstractEntity{
 
     @Id
@@ -24,11 +27,19 @@ public class Person extends AbstractEntity{
     @Size(min=3,max = 255,message = "Name should be between 3 and 255")
     private String name;
 
+    @Column(name = "password")
+    @NotEmpty(message = "Password should be not empty")
+    @Size(min = 10,max = 50,message = "Password size should be between 10 and 50")
+    private String password;
+
+    @Column(name = "cash")
+    @NotNull(message = "Cash should be not empty")
+    @Min(value = 0,message = "Minimal size of sash is 0")
+    private int cash;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    public Person(){}
 }
