@@ -3,6 +3,7 @@ package auction.backend.dev.services.Person;
 import auction.backend.dev.base.EntityTag;
 import auction.backend.dev.base.ResponseStatusTag;
 import auction.backend.dev.dto.PersonDTO;
+import auction.backend.dev.dto.PersonDTOResponse;
 import auction.backend.dev.models.Person;
 import auction.backend.dev.util.Excaption.common.ErrorInfo;
 import auction.backend.dev.util.Excaption.common.NotCreatedException;
@@ -10,6 +11,7 @@ import auction.backend.dev.util.Excaption.common.NotUpdatedException;
 import auction.backend.dev.util.Response.GoodResponse;
 import auction.backend.dev.util.Response.ResponseDTO;
 import auction.backend.dev.util.Validation.PersonNameUniqueValidation;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,13 +38,13 @@ public class PeopleService {
         this.personNameUniqueValidation = personNameUniqueValidation;
     }
 
-    public ResponseEntity<ResponseDTO<PersonDTO>>getAll(){
+    public ResponseEntity<ResponseDTO<PersonDTOResponse>>getAll(){
         List<Person>people=peopleDBService.getAll();
-        List<PersonDTO>peopleDTOS=new ArrayList<>();
+        List<PersonDTOResponse>peopleDTOS=new ArrayList<>();
         for (Person person : people)
-            peopleDTOS.add(convertToPersonDTO(person));
+            peopleDTOS.add(convertToPersonDTOResponse(person));
 
-        ResponseDTO<PersonDTO>response=new ResponseDTO<>(
+        ResponseDTO<PersonDTOResponse>response=new ResponseDTO<>(
                 ResponseStatusTag.OK,
                 EntityTag.PERSON,
                 LocalDateTime.now(),
@@ -106,6 +108,10 @@ public class PeopleService {
 
     private Person convertToPerson(PersonDTO personDTO){
         return modelMapper.map(personDTO, Person.class);
+    }
+
+    private PersonDTOResponse convertToPersonDTOResponse(Person person){
+        return modelMapper.map(person, PersonDTOResponse.class);
     }
 
     private List<PersonDTO>wrapPersonDTO(PersonDTO personDTO){

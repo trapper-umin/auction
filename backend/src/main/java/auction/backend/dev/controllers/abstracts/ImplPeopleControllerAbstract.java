@@ -2,6 +2,7 @@ package auction.backend.dev.controllers.abstracts;
 
 import auction.backend.dev.controllers.interfaces.IPeopleController;
 import auction.backend.dev.dto.PersonDTO;
+import auction.backend.dev.dto.PersonDTOResponse;
 import auction.backend.dev.services.Person.PeopleService;
 import auction.backend.dev.util.Response.GoodResponse;
 import auction.backend.dev.util.Response.ResponseDTO;
@@ -19,7 +20,7 @@ public abstract class ImplPeopleControllerAbstract implements IPeopleController 
     }
 
     @Override
-    public ResponseEntity<ResponseDTO<PersonDTO>> getAll() {
+    public ResponseEntity<ResponseDTO<PersonDTOResponse>> getAll() {
         return peopleService.getAll();
     }
 

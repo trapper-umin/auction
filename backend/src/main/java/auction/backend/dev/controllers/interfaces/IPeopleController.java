@@ -1,6 +1,7 @@
 package auction.backend.dev.controllers.interfaces;
 
 import auction.backend.dev.dto.PersonDTO;
+import auction.backend.dev.dto.PersonDTOResponse;
 import auction.backend.dev.util.Response.GoodResponse;
 import auction.backend.dev.util.Response.ResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,7 +21,7 @@ public interface IPeopleController {
             @ApiResponse(responseCode = "404",description = "Not found people in DB")
     })
     @GetMapping
-    ResponseEntity<ResponseDTO<PersonDTO>> getAll();
+    ResponseEntity<ResponseDTO<PersonDTOResponse>> getAll();
 
     @Operation(summary = "Get person by ID")
     @ApiResponses(value = {
