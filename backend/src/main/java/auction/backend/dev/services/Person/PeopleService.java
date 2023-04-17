@@ -53,14 +53,14 @@ public class PeopleService {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    public ResponseEntity<ResponseDTO<PersonDTO>>get(int id){
-        PersonDTO person=convertToPersonDTO(peopleDBService.get(id));
+    public ResponseEntity<ResponseDTO<PersonDTOResponse>>get(int id){
+        PersonDTOResponse person=convertToPersonDTOResponse(peopleDBService.get(id));
 
-        ResponseDTO<PersonDTO>response=new ResponseDTO<>(
+        ResponseDTO<PersonDTOResponse>response=new ResponseDTO<>(
                 ResponseStatusTag.OK,
                 EntityTag.PERSON,
                 LocalDateTime.now(),
-                wrapPersonDTO(person)
+                wrapPersonDTOResponse(person)
         );
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
@@ -117,6 +117,12 @@ public class PeopleService {
     private List<PersonDTO>wrapPersonDTO(PersonDTO personDTO){
         List<PersonDTO>wrapper=new ArrayList<>();
         wrapper.add(personDTO);
+        return wrapper;
+    }
+
+    private List<PersonDTOResponse>wrapPersonDTOResponse(PersonDTOResponse personDTOResponse){
+        List<PersonDTOResponse>wrapper=new ArrayList<>();
+        wrapper.add(personDTOResponse);
         return wrapper;
     }
 
