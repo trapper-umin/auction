@@ -7,7 +7,8 @@ public enum ResponseStatusTag {
     OK(200,"OK"),
     NOT_FOUND(404, "NOT FOUND"),
     FORBIDDEN(403, "FORBIDDEN"),
-    BAD_REQUEST(400,"BAD REQUEST");
+    BAD_REQUEST(400,"BAD REQUEST"),
+    SUCCESS(1200,"DEAL SUCCESS");
 
     private final int code;
 
