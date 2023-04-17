@@ -10,6 +10,7 @@ import lombok.*;
 import org.hibernate.annotations.Cascade;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "item")
@@ -54,4 +55,7 @@ public class Item extends AbstractEntity {
     @JoinColumn(name = "person_id",referencedColumnName = "person_id")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private Person owner;
+
+    @OneToMany(mappedBy = "item",fetch = FetchType.EAGER)
+    private List<Deal> deals;
 }
