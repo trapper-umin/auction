@@ -74,6 +74,7 @@ public class DealDBService {
         dealsRepository.save(deal);
 
         List<Person>people=new ArrayList<>(2);
+        //TODO поправить баг в рспонсе
         people.add(seller);
         people.add(buyer);
 
