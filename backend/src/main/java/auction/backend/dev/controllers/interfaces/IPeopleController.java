@@ -29,7 +29,7 @@ public interface IPeopleController {
             @ApiResponse(responseCode = "404",description = "Not found person with this ID")
     })
     @GetMapping("/{id}")
-    ResponseEntity<ResponseDTO<PersonDTO>> get(
+    ResponseEntity<ResponseDTO<PersonDTOResponse>> get(
             @Parameter(description = "Person ID") @PathVariable("id") int id);
 
     @Operation(summary = "Create")

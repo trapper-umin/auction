@@ -25,7 +25,7 @@ public abstract class ImplPeopleControllerAbstract implements IPeopleController 
     }
 
     @Override
-    public ResponseEntity<ResponseDTO<PersonDTO>> get(int id) {
+    public ResponseEntity<ResponseDTO<PersonDTOResponse>> get(int id) {
         return peopleService.get(id);
     }
 
