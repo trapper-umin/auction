@@ -1,7 +1,7 @@
 package auction.backend.dev.controllers;
 
 import auction.backend.dev.controllers.abstracts.ImplDealControllerAbstract;
-import auction.backend.dev.services.DealService;
+import auction.backend.dev.services.deal.DealService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

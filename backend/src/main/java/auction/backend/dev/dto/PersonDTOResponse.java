@@ -10,6 +10,8 @@ import java.util.List;
 @Setter
 public class PersonDTOResponse extends AbstractDTO {
 
+    private int id;
+
     private String name;
 
     private int cash;
