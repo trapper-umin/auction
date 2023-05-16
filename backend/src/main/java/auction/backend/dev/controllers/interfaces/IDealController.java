@@ -13,14 +13,13 @@ import org.springframework.web.bind.annotation.*;
 public interface IDealController {
 
     @Operation(summary = "Make a deal")
-    @ApiResponses(
-            @ApiResponse(responseCode = "200",description = "Deal success")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Deal success"),
+            @ApiResponse(responseCode = "400",description = "Bad request")
+        }
     )
-    @GetMapping(params = {"seller","buyer","item"})
+    @PostMapping
     ResponseEntity<SuccessDealResponse> create(
             @RequestBody @Valid DealDTO dealDTO,
-            BindingResult bindingResult,
-            @RequestParam("seller") int seller,
-            @RequestParam("buyer") int buyer,
-            @RequestParam("item") int item);
+            BindingResult bindingResult);
 }

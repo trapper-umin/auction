@@ -1,4 +1,4 @@
-package auction.backend.dev.services;
+package auction.backend.dev.services.deal;
 
 import auction.backend.dev.dto.DealDTO;
 import auction.backend.dev.models.Deal;
@@ -32,10 +32,12 @@ public class DealDBService {
     }
 
     @Transactional
-    public List<Person> create(DealDTO dealDTO,
-                               int sellerId,
-                               int buyerId,
-                               int itemId){
+    public List<Person> create(DealDTO dealDTO){
+
+        int sellerId=dealDTO.getSellerId();
+        int buyerId=dealDTO.getBuyerId();
+        int itemId=dealDTO.getItemId();
+
         Person seller=peopleDBService.get(sellerId);
         Person buyer=peopleDBService.get(buyerId);
         Item item=itemsDBService.get(itemId);
@@ -75,8 +77,8 @@ public class DealDBService {
 
         List<Person>people=new ArrayList<>(2);
         //TODO поправить баг в рспонсе
-        people.add(seller);
-        people.add(buyer);
+        people.add(peopleDBService.get(sellerId));
+        people.add(peopleDBService.get(buyerId));
 
         return people;
     }
